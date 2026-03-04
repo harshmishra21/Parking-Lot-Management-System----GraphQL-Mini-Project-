@@ -1,4 +1,4 @@
-# 🅿️ Parking Lot API - Test Queries (English Guide)
+# 🅿️ Parking Lot API - Test Queries Guide
 
 This file contains all **5 main GraphQL queries** that you can copy-paste directly into the playground to test.
 
