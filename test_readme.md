@@ -1,23 +1,23 @@
-# 🅿️ Parking Lot API - Test Queries (Hinglish Guide)
+# 🅿️ Parking Lot API - Test Queries (English Guide)
 
-Yeh file mein saare **5 main GraphQL queries** hain jo aap seedha playground mein copy-paste karke test kar sakte ho.
+This file contains all **5 main GraphQL queries** that you can copy-paste directly into the playground to test.
 
-**Playground kholo:** [http://localhost:8001/graphql](http://localhost:8001/graphql)
+**Open Playground:** [http://localhost:8001/graphql](http://localhost:8001/graphql)
 
-> ⚠️ **Zaroori tip:** Har query paste karne se pehle editor mein `Cmd + A` dabao (sab select karo), phir purana text delete karo, **tab** naya query paste karo. Nahi toh syntax error aayega!
+> ⚠️ **Important Tip:** Before pasting each query, press `Cmd + A` (select all) in the editor, delete the old text, **then** paste the new query. Otherwise, you'll get a syntax error!
 
 ---
 
-## 🔍 Query 1 — Parking Lot Ka Poora Status
+## 🔍 Query 1 — Complete Parking Lot Status
 
-**Kya karta hai?**
-Yeh query batata hai ki parking lot mein:
-- Kitne spots **available** hain (khali jagah)
-- Kitne spots **occupied** hain (bhari jagah)
-- Lot ka **overall status** kya hai — `"Available"`, `"Almost Full"`, `"Full"`, ya `"Empty"`
-- Har individual spot ka **number, type aur status**
+**What does this do?**
+This query tells you:
+- How many spots are **available**
+- How many spots are **occupied**
+- What is the **overall status** of the lot — `"Available"`, `"Almost Full"`, `"Full"`, or `"Empty"`
+- The **number, type and status** of each individual spot
 
-Basically, is ek query se puri parking lot ki LIVE picture mil jaati hai! 🎯
+Basically, this single query gives you a full LIVE picture of the parking lot! 🎯
 
 ```graphql
 query {
@@ -36,20 +36,20 @@ query {
 }
 ```
 
-**Expected Result:** `"lotStatus": "Available"` — Downtown Central Parking ke 20 spots mein se 18 available honge (seed ke baad).
+**Expected Result:** `"lotStatus": "Available"` — Out of 20 spots at Downtown Central Parking, ~18 will be available (after seeding).
 
 ---
 
-## 🚗 Query 2 — Vehicle (Gaadi) Ki Poori Parking History
+## 🚗 Query 2 — Full Vehicle Parking History
 
-**Kya karta hai?**
-Kisi bhi specific gaadi (yahan ID 1 wali Tesla) ka complete parking record dikhata hai:
-- Har session ka **entryTime** (kab aayi)
-- **exitTime** (kab gayi)
-- **totalFee** (kitne paise diye)
-- **status** (completed hai ya abhi bhi active)
+**What does this do?**
+Shows the complete parking record for any specific vehicle (here, the Tesla with ID 1):
+- **entryTime** of each session
+- **exitTime**
+- **totalFee** paid
+- **status** (completed or still active)
 
-Gaadi ka poora itihaar ek baar mein! 📋
+The vehicle's entire history in one go! 📋
 
 ```graphql
 query {
@@ -66,21 +66,21 @@ query {
 }
 ```
 
-**Expected Result:** `"licensePlate": "XYZ-123"` wali Tesla ki completed sessions aur fees dikhegi.
+**Expected Result:** You will see completed sessions and fees for the Tesla with `"licensePlate": "XYZ-123"`.
 
 ---
 
-## 🔴 Query 3 — Abhi Kaun Kaun Khada Hai? (Live Active Sessions)
+## 🔴 Query 3 — Who is Currently Parked? (Live Active Sessions)
 
-**Kya karta hai?**
-Real-time mein jo bhi gaadiyaan parking lot mein khadi hain, unki poori list aati hai:
+**What does this do?**
+Returns a full list of vehicles currently parked in the lot in real-time:
 - **Session ID** (unique number)
-- **entryTime** — kab se gaadi andar hai
-- **exitTime** — abhi active sessions mein yeh `null` hoga (gaadi abhi baahar nahi gayi)
-- Spot ka **spotNumber** aur **status**
-- Gaadi ka **licensePlate**
+- **entryTime** — when the vehicle entered
+- **exitTime** — will be `null` for active sessions (vehicle hasn't left yet)
+- **spotNumber** and **status** of the spot
+- Vehicle's **licensePlate**
 
-Security waly ya attendant is query se check kar sakte hain ki kaun parking mein hai! 👀
+Security or attendants can use this query to check who is in the parking lot! 👀
 
 ```graphql
 query {
@@ -100,20 +100,20 @@ query {
 }
 ```
 
-**Expected Result:** 2 active sessions hongi (seed ke baad) — LMN-456 aur EVR-777 wali gaadiyan.
+**Expected Result:** There will be 2 active sessions (after seeding) — vehicles LMN-456 and EVR-777.
 
 ---
 
-## 🟢 Query 4 — Naya Parking Session Shuru Karo (Gaadi Andar Aaye)
+## 🟢 Query 4 — Start a New Parking Session (Vehicle Entry)
 
-**Kya karta hai?**
-Jab koi nayi gaadi parking mein aati hai, tab yeh mutation run karo. Isse:
-- Ek **naya session** create hota hai
-- **entryTime** automatically set ho jaata hai (abhi ka time)
-- **exitTime** abhi `null` hoga (gaadi andar hai)
-- Spot status `"occupied"` ho jaata hai
+**What does this do?**
+Run this mutation when a new vehicle enters the parking lot. This:
+- Creates a **new session**
+- Automatically sets **entryTime** (current time)
+- Sets **exitTime** to `null` (vehicle is inside)
+- Updates spot status to `"occupied"`
 
-> ⚠️ **Dhyan rakhna:** `spotId: 3` sirf tabhi kaam karega jab spot available ho. Pehle Query 1 chalao aur dekho kaunsa spot `"available"` hai, phir woh `spotId` yahan daalein!
+> ⚠️ **Note:** `spotId: 3` will only work if the spot is available. Run Query 1 first to check which spot is `"available"`, then enter that `spotId` here!
 
 ```graphql
 mutation {
@@ -132,20 +132,20 @@ mutation {
 }
 ```
 
-**Expected Result:** Naya session bana, `"status": "active"`, `"exitTime": null`. **Response mein jo `id` aaye, usse note karo — Query 5 mein kaam aayega!**
+**Expected Result:** New session created, `"status": "active"`, `"exitTime": null`. **Note the `id` from the response — you'll need it in Query 5!**
 
 ---
 
-## 🔴 Query 5 — Parking Session Khatam Karo (Gaadi Baahir Jaaye)
+## 🔴 Query 5 — End Parking Session (Vehicle Exit)
 
-**Kya karta hai?**
-Jab gaadi baahir jaati hai, yeh mutation chalao. Isse:
-- **exitTime** automatically set hota hai (abhi ka time)
-- **totalFee** calculate hoti hai (ghante ke hisaab se — minimum 1 ghante ka charge)
-- Session **status** `"completed"` ho jaata hai
-- Spot dobara `"available"` ho jaata hai
+**What does this do?**
+Run this mutation when a vehicle leaves. This:
+- Automatically sets **exitTime** (current time)
+- Calculates **totalFee** (hourly basis — minimum 1 hour charge)
+- Updates session **status** to `"completed"`
+- Sets spot back to `"available"`
 
-> ⚠️ **Pehle Query 4 chalao**, phir ussi response mein `id` jo aaye (jaise `5`), woh `sessionId` ki jagah yahan daalein!
+> ⚠️ **Run Query 4 first**, then use the `id` from that response (e.g., `5`) in place of `sessionId` here!
 
 ```graphql
 mutation {
@@ -163,33 +163,33 @@ mutation {
 }
 ```
 
-**Expected Result:** `"status": "completed"`, `"totalFee": 5.0` (1 ghante ka minimum charge × ₹5/hr rate).
+**Expected Result:** `"status": "completed"`, `"totalFee": 5.0` (Minimum 1 hour charge × $5/hr rate).
 
 ---
 
-## ✅ Sahi Order Mein Chalao
+## ✅ Run in Correct Order
 
-Sabse best experience ke liye, queries is order mein chalao:
+For the best experience, run queries in this order:
 
 ```
-Query 1 → Dekho kaun se spots available hain
-Query 2 → Kisi gaadi ki history dekho
-Query 3 → Abhi kaun andar hai dekho
-Query 4 → Naya session start karo (entry) → ID note karo!
-Query 5 → Session end karo (exit) → ID use karo jo Query 4 ne diya
+Query 1 → Check which spots are available
+Query 2 → Check a vehicle's history
+Query 3 → Check who is currently in the lot
+Query 4 → Start a new session (entry) → Note the ID!
+Query 5 → End the session (exit) → Use the ID from Query 4
 ```
 
 ---
 
-## 🔄 Fresh Data Chahiye? Database Re-seed Karo
+## 🔄 Need Fresh Data? Re-seed the Database
 
-Agar database mein bahut saare test sessions aa gaye hain aur clean start chahiye, toh terminal mein yeh command chalao:
+If the database has too many test sessions and you want a clean start, run this command in the terminal:
 
 ```bash
 python seed.py
 ```
 
-Isse sab purana data hat jaata hai aur fresh demo data aa jaata hai. Phir server restart karo:
+This removes all old data and loads fresh demo data. Then restart the server:
 
 ```bash
 uvicorn main:app --reload
