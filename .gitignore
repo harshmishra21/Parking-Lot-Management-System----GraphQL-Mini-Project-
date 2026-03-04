@@ -1,0 +1,40 @@
+# Python virtual environments
+venv/
+venv_fix/
+demo_env/
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# SQLite database files (contains real data, do not commit)
+*.db
+*.sqlite
+*.sqlite3
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+
+# Pytest cache
+.pytest_cache/
